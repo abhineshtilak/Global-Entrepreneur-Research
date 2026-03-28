@@ -62,17 +62,31 @@
 
     <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
                     <span class="text-xl font-bold text-gray-800 tracking-tight">Founder<span class="text-amber-600">Dynamics</span></span>
                 </div>
-                <div class="hidden md:flex items-center space-x-8">
+                <button id="mobileNavButton" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-500 md:hidden" aria-expanded="false" aria-label="Open main menu">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+                <div id="mainNavLinks" class="hidden md:flex items-center space-x-8">
                     <a href="Index.html" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Dashboard</a>
                     <a href="#demographics" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Who They Are</a>
                     <a href="#motivations" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Why & How</a>
                     <a href="#industries" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Where They Build</a>
                     <a href="infographic.html" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Infographic</a>
                 </div>
+            </div>
+        </div>
+        <div id="mobileNav" class="hidden md:hidden bg-white border-t border-gray-200">
+            <div class="px-4 pt-2 pb-4 space-y-2">
+                <a href="Index.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-amber-100">Dashboard</a>
+                <a href="#demographics" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-amber-100">Who They Are</a>
+                <a href="#motivations" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-amber-100">Why & How</a>
+                <a href="#industries" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-amber-100">Where They Build</a>
+                <a href="infographic.html" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-amber-100">Infographic</a>
             </div>
         </div>
     </nav>
@@ -487,6 +501,19 @@
                 }
             });
 
+            // --- Mobile nav toggle ---
+            const mobileNavButton = document.getElementById('mobileNavButton');
+            const mobileNav = document.getElementById('mobileNav');
+            mobileNavButton.addEventListener('click', () => {
+                const isHidden = mobileNav.classList.contains('hidden');
+                if (isHidden) {
+                    mobileNav.classList.remove('hidden');
+                    mobileNavButton.setAttribute('aria-expanded', 'true');
+                } else {
+                    mobileNav.classList.add('hidden');
+                    mobileNavButton.setAttribute('aria-expanded', 'false');
+                }
+            });
         });
     </script>
 </body>
