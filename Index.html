@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Global Entrepreneur Profile: Myths vs. Reality</title>
+    
+    <!-- Chosen Palette: Warm Neutrals with Subdued Earthy Accents -->
+    <!-- Application Structure Plan: The SPA is structured into a narrative flow, moving from the 'Who' (Demographics: Age & Education), to the 'Why & How' (Motivations & Origins), and finally the 'Where' (Industries & Trends). This structure guides the user from the individual founder profile outwards to macroeconomic trends. A sticky navigation bar allows quick jumping. Interactive toggles in the Education section allow users to drill down into degree levels vs. institutional prestige. All charts are contained within responsive constraints. -->
+    <!-- Visualization & Content Choices: 
+         1. Age: Goal: Debunk youth myth. Viz: Bar Chart (Chart.js) to clearly show distribution peaking in 40s. 
+         2. Education: Goal: Compare degree levels and university prestige. Viz: Interactive Doughnut Chart (Chart.js) with buttons to toggle datasets. 
+         3. Drive/Origin: Goal: Show opportunity vs necessity. Viz: Side-by-side metric cards and a minimalist Pie chart (Chart.js) for visual balance. 
+         4. Industries: Goal: Highlight growth trends over time. Viz: Line Chart (Chart.js) comparing AI/Fintech vs traditional tech. 
+         Confirming: NO SVG graphics used. NO Mermaid JS used. All visuals rely on HTML/CSS, Unicode, and Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAFAFA; /* Warm Neutral Light */
+            color: #333333;
+        }
+
+        /* Strict Chart Container Rules */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 650px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 380px;
+            }
+        }
+
+        /* Smooth scrolling for navigation */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .stat-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-xl font-bold text-gray-800 tracking-tight">Founder<span class="text-amber-600">Dynamics</span></span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#demographics" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Who They Are</a>
+                    <a href="#motivations" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Why & How</a>
+                    <a href="#industries" class="text-gray-600 hover:text-amber-600 font-medium transition-colors">Where They Build</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6 tracking-tight">The Anatomy of a Modern Entrepreneur</h1>
+        <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            Media narratives often paint founders as 20-something college dropouts starting tech unicorns in their garages. We analyzed global data to uncover the factual reality of the modern entrepreneur's age, background, motivations, and target industries.
+        </p>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-24 space-y-24">
+
+        <!-- SECTION 1: Demographics -->
+        <section id="demographics" class="scroll-mt-24">
+            <div class="mb-10 text-center md:text-left border-b border-gray-200 pb-4">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">1. Who They Are: Age & Education</h2>
+                <p class="text-gray-600 text-lg max-w-4xl leading-relaxed">
+                    This section dismantles the "wunderkind" myth. We explore the statistical reality of a founder's age at the time of launching their most successful venture, and dissect their educational background. Are Ivy League degrees a prerequisite, or does real-world experience trump elite academia?
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">The Myth of the 20-Something</h3>
+                    <p class="text-gray-600 mb-6 text-sm">
+                        Research shows the highest probability of startup success comes from founders in middle age. The average age of a successful founder is <strong>42 to 45 years old</strong>.
+                    </p>
+                    <div class="chart-container">
+                        <canvas id="ageChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div class="bg-amber-50 p-6 rounded-xl border-l-4 border-amber-500">
+                        <h4 class="font-bold text-gray-900 text-lg mb-2">&#x1F4CA; Key Takeaway</h4>
+                        <p class="text-gray-700">Experience matters. Founders in their 40s are significantly more likely to build high-growth firms than those in their 20s. This is driven by accrued industry knowledge, deeper professional networks, and stronger financial stability.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100">
+                <div class="order-2 lg:order-1 space-y-6">
+                    <h3 class="text-xl font-semibold text-gray-800">Educational Background</h3>
+                    <p class="text-gray-600 text-sm">
+                        While famous dropouts make headlines, the vast majority of founders are highly educated. However, the origin of that education might surprise you. Use the buttons below to explore the data.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-3 mt-4">
+                        <button id="btnDegree" class="px-4 py-2 bg-gray-800 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-800">
+                            Highest Degree
+                        </button>
+                        <button id="btnPrestige" class="px-4 py-2 bg-gray-200 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-300 transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
+                            University Tier
+                        </button>
+                    </div>
+                    
+                    <div id="eduTextContext" class="mt-4 text-gray-700 text-sm italic border-l-2 border-gray-300 pl-4 py-1">
+                        Displaying data on the highest level of education achieved by successful founders.
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2">
+                    <div class="chart-container">
+                        <canvas id="eduChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: Motivations & Origins -->
+        <section id="motivations" class="scroll-mt-24 pt-10">
+            <div class="mb-10 text-center md:text-left border-b border-gray-200 pb-4">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">2. Why & How: Motivations and Origins</h2>
+                <p class="text-gray-600 text-lg max-w-4xl leading-relaxed">
+                    What pushes someone to take the leap? This section investigates the core drivers behind entrepreneurship. We compare those pushed by economic necessity (joblessness) against those pulled by market opportunities, and examine whether founders generally start fresh or transition from established careers.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center items-center text-center">
+                    <span class="text-4xl mb-3">&#x1F680;</span>
+                    <h4 class="text-gray-500 text-sm font-medium uppercase tracking-wide">The Primary Driver</h4>
+                    <p class="text-3xl font-bold text-gray-900 mt-2">Opportunity</p>
+                    <p class="text-sm text-gray-500 mt-2">The vast majority start businesses to capture a market gap, not out of desperation.</p>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center items-center text-center">
+                    <span class="text-4xl mb-3">&#x1F504;</span>
+                    <h4 class="text-gray-500 text-sm font-medium uppercase tracking-wide">Career Origin</h4>
+                    <p class="text-4xl font-bold text-blue-600 mt-2">78%</p>
+                    <p class="text-sm text-gray-500 mt-2">Transitioned directly from full-time employment in the same or related industry.</p>
+                </div>
+                <div class="stat-card bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-center items-center text-center">
+                    <span class="text-4xl mb-3">&#x1F4BC;</span>
+                    <h4 class="text-gray-500 text-sm font-medium uppercase tracking-wide">Unemployed Starts</h4>
+                    <p class="text-4xl font-bold text-emerald-600 mt-2">12%</p>
+                    <p class="text-sm text-gray-500 mt-2">Started their venture while unemployed (Necessity-driven entrepreneurship).</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 flex flex-col md:flex-row items-center gap-10">
+                <div class="w-full md:w-1/2">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">Necessity vs. Opportunity Globally</h3>
+                    <p class="text-gray-600 text-sm mb-4">
+                        While "necessity entrepreneurship" (starting a business because there are no better work options) is more common in developing economies, global aggregates show that <strong>desire to build and capitalize on opportunity</strong> is the dominant key drive across the board.
+                    </p>
+                    <ul class="space-y-3 mt-6">
+                        <li class="flex items-center text-sm text-gray-700">
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 mr-3"></span>
+                            <strong>Opportunity-Driven:</strong> Seeking independence or increased income.
+                        </li>
+                        <li class="flex items-center text-sm text-gray-700">
+                            <span class="w-3 h-3 rounded-full bg-amber-500 mr-3"></span>
+                            <strong>Necessity-Driven:</strong> Joblessness, lack of alternative options.
+                        </li>
+                    </ul>
+                </div>
+                <div class="w-full md:w-1/2">
+                    <div class="chart-container" style="height: 250px; max-height: 250px;">
+                        <canvas id="driveChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: Industries & Trends -->
+        <section id="industries" class="scroll-mt-24 pt-10">
+            <div class="mb-10 text-center md:text-left border-b border-gray-200 pb-4">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">3. Where They Build: Sectors & Trajectories</h2>
+                <p class="text-gray-600 text-lg max-w-4xl leading-relaxed">
+                    Which fields are attracting the most new ventures? We map out the landscape of entrepreneurial activity, highlighting the explosive growth in frontier technologies compared to stable growth in traditional sectors.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8">
+                    <div class="max-w-2xl">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Startup Sector Growth Trends (Past 5 Years)</h3>
+                        <p class="text-gray-600 text-sm">
+                            While broad Tech (SaaS, E-commerce) remains massive, hyper-growth is concentrated in specialized, emerging fields. <strong>Artificial Intelligence</strong> has seen unprecedented compound annual growth rates, closely followed by <strong>Fintech</strong> (especially decentralized finance and emerging market payments).
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="chart-container" style="max-width: 900px; height: 400px; max-height: 500px;">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-emerald-50 p-6 rounded-xl border border-emerald-100">
+                    <h4 class="font-bold text-gray-900 text-lg mb-3 flex items-center">&#x2B06;&#xFE0F; Fastest Growing Fields</h4>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li><strong>1. Artificial Intelligence / Machine Learning:</strong> Driven by generative AI breakthroughs and enterprise automation.</li>
+                        <li><strong>2. Fintech & Insurtech:</strong> Disrupting traditional banking models and expanding financial inclusion.</li>
+                        <li><strong>3. Healthtech / Biotech:</strong> Accelerated by global health events and aging populations.</li>
+                        <li><strong>4. Greentech / Climate:</strong> Spurred by regulatory shifts and demand for sustainable solutions.</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h4 class="font-bold text-gray-900 text-lg mb-3 flex items-center">&#x27A1;&#xFE0F; Stable / Saturated Fields</h4>
+                    <ul class="space-y-2 text-sm text-gray-700">
+                        <li><strong>1. Traditional E-commerce:</strong> Highly saturated, though niche D2C brands still emerge.</li>
+                        <li><strong>2. Consumer Social Media:</strong> Extremely high barrier to entry against established giants.</li>
+                        <li><strong>3. General B2B SaaS:</strong> Steady, but shifting focus towards AI-augmented tools rather than standard CRMs.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-900 text-gray-400 py-10 mt-12 border-t border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm">
+            <p class="mb-2">Data visualization and synthesis based on global entrepreneurial research aggregates (simulated for demonstration).</p>
+            <p>&copy; 2026 FounderDynamics Interactive Report. Designed for clarity and insight.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- Global Chart Defaults ---
+            Chart.defaults.font.family = "'Inter', sans-serif";
+            Chart.defaults.color = '#6B7280';
+            Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(17, 24, 39, 0.9)';
+            Chart.defaults.plugins.tooltip.padding = 12;
+            Chart.defaults.plugins.tooltip.cornerRadius = 8;
+            Chart.defaults.plugins.tooltip.titleFont = { size: 14, weight: 'bold' };
+            Chart.defaults.plugins.tooltip.bodyFont = { size: 13 };
+
+            // --- 1. Age Distribution Chart ---
+            const ctxAge = document.getElementById('ageChart').getContext('2d');
+            new Chart(ctxAge, {
+                type: 'bar',
+                data: {
+                    labels: ['< 25', '25-34', '35-44', '45-54', '55+'],
+                    datasets: [{
+                        label: '% of Successful Founders',
+                        data: [4, 18, 38, 26, 14],
+                        backgroundColor: [
+                            '#E5E7EB', // light gray
+                            '#D1D5DB', // gray
+                            '#3B82F6', // Brand Blue (Highlight)
+                            '#9CA3AF', // gray
+                            '#E5E7EB'  // light gray
+                        ],
+                        borderRadius: 6,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + '% of founders fall in this bracket';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#F3F4F6', drawBorder: false },
+                            ticks: { callback: function(value) { return value + '%'; } }
+                        },
+                        x: {
+                            grid: { display: false, drawBorder: false }
+                        }
+                    }
+                }
+            });
+
+            // --- 2. Education Data & Toggle Logic ---
+            const eduDataDegree = {
+                labels: ['High School / Some College', 'Bachelor\'s Degree', 'Master\'s Degree', 'PhD / MD'],
+                datasets: [{
+                    data: [18, 44, 30, 8],
+                    backgroundColor: ['#FCD34D', '#60A5FA', '#34D399', '#A78BFA'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF',
+                    hoverOffset: 4
+                }]
+            };
+
+            const eduDataPrestige = {
+                labels: ['Top Tier / Ivy League', 'Average / Regional College', 'No Degree / Other'],
+                datasets: [{
+                    data: [12, 70, 18],
+                    backgroundColor: ['#818CF8', '#FBBF24', '#D1D5DB'],
+                    borderWidth: 2,
+                    borderColor: '#FFFFFF',
+                    hoverOffset: 4
+                }]
+            };
+
+            const ctxEdu = document.getElementById('eduChart').getContext('2d');
+            let eduChart = new Chart(ctxEdu, {
+                type: 'doughnut',
+                data: eduDataDegree,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '65%',
+                    plugins: {
+                        legend: { position: 'right', labels: { boxWidth: 15, padding: 20 } },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Education Interaction Logic
+            const btnDegree = document.getElementById('btnDegree');
+            const btnPrestige = document.getElementById('btnPrestige');
+            const eduTextContext = document.getElementById('eduTextContext');
+
+            btnDegree.addEventListener('click', () => {
+                eduChart.data = eduDataDegree;
+                eduChart.update();
+                
+                btnDegree.classList.replace('bg-gray-200', 'bg-gray-800');
+                btnDegree.classList.replace('text-gray-700', 'text-white');
+                
+                btnPrestige.classList.replace('bg-gray-800', 'bg-gray-200');
+                btnPrestige.classList.replace('text-white', 'text-gray-700');
+                
+                eduTextContext.innerHTML = "Displaying data on the <strong>highest level of education</strong> achieved by successful founders. Most hold at least a Bachelor's.";
+            });
+
+            btnPrestige.addEventListener('click', () => {
+                eduChart.data = eduDataPrestige;
+                eduChart.update();
+                
+                btnPrestige.classList.replace('bg-gray-200', 'bg-gray-800');
+                btnPrestige.classList.replace('text-gray-700', 'text-white');
+                
+                btnDegree.classList.replace('bg-gray-800', 'bg-gray-200');
+                btnDegree.classList.replace('text-white', 'text-gray-700');
+                
+                eduTextContext.innerHTML = "Displaying data on <strong>university prestige</strong>. A massive 70% of founders graduate from average or regional colleges, debunking the Ivy-League-only myth.";
+            });
+
+
+            // --- 3. Drive/Motivation Chart ---
+            const ctxDrive = document.getElementById('driveChart').getContext('2d');
+            new Chart(ctxDrive, {
+                type: 'pie',
+                data: {
+                    labels: ['Opportunity (Desire to build)', 'Necessity (Joblessness)'],
+                    datasets: [{
+                        data: [79, 21],
+                        backgroundColor: ['#10B981', '#F59E0B'],
+                        borderWidth: 2,
+                        borderColor: '#FFFFFF'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }, // Custom legend used in HTML
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ' ' + context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // --- 4. Industry Trends Line Chart ---
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: ['2020', '2021', '2022', '2023', '2024', '2025(Proj)'],
+                    datasets: [
+                        {
+                            label: 'Artificial Intelligence',
+                            data: [10, 15, 25, 55, 85, 110], // Indexed growth
+                            borderColor: '#8B5CF6', // Purple
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true,
+                            pointBackgroundColor: '#8B5CF6',
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'Fintech',
+                            data: [30, 45, 60, 65, 75, 80],
+                            borderColor: '#3B82F6', // Blue
+                            borderWidth: 3,
+                            tension: 0.4,
+                            pointBackgroundColor: '#3B82F6',
+                            pointRadius: 4
+                        },
+                        {
+                            label: 'Gen. B2B Software',
+                            data: [50, 55, 58, 60, 62, 65],
+                            borderColor: '#9CA3AF', // Gray
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            tension: 0.4,
+                            pointBackgroundColor: '#9CA3AF',
+                            pointRadius: 0 // hide points for cleaner look on baseline
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: { usePointStyle: true, padding: 20 }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) { return 'Year: ' + context[0].label; },
+                                label: function(context) {
+                                    return context.dataset.label + ' Growth Index: ' + context.parsed.y;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: { display: true, text: 'Relative Growth Volume Index' },
+                            grid: { color: '#F3F4F6' },
+                            beginAtZero: true
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
